@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="0. Table of Contents#     1. Install Database (MySQL) 1-1. Pull and Run MySQL Container 1-2. Install MySQL Client   2. Create MySQL Login PATH 2-1. Create a Login PATH 2-2. Use Login PATH 2-3. Other C">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CentOS8 Minimal MySQL Installation by using Docker">
+<meta property="og:url" content="https://8eatles.github.io/2020/03/03/CentOS8-Minimal-MySQL-Installation-by-using-Docker/index.html">
+<meta property="og:site_name" content="8eatles">
+<meta property="og:description" content="0. Table of Contents#     1. Install Database (MySQL) 1-1. Pull and Run MySQL Container 1-2. Install MySQL Client   2. Create MySQL Login PATH 2-1. Create a Login PATH 2-2. Use Login PATH 2-3. Other C">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-03-03T14:05:38.000Z">
+<meta property="article:modified_time" content="2020-03-18T16:33:34.843Z">
+<meta property="article:author" content="8eatles">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>CentOS8 Minimal MySQL Installation by using Docker</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2020/03/19/How-to-connect-subdomain-to-service-port-based-on-docker/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2020/03/03/CentOS8-Minimal-MySQL-Installation-Automation/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://8eatles.github.io/2020/03/03/CentOS8-Minimal-MySQL-Installation-by-using-Docker/" target="_blank" rel="noopener"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://8eatles.github.io/2020/03/03/CentOS8-Minimal-MySQL-Installation-by-using-Docker/&text=CentOS8 Minimal MySQL Installation by using Docker" target="_blank" rel="noopener"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://8eatles.github.io/2020/03/03/CentOS8-Minimal-MySQL-Installation-by-using-Docker/&title=CentOS8 Minimal MySQL Installation by using Docker" target="_blank" rel="noopener"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://8eatles.github.io/2020/03/03/CentOS8-Minimal-MySQL-Installation-by-using-Docker/&is_video=false&description=CentOS8 Minimal MySQL Installation by using Docker" target="_blank" rel="noopener"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=CentOS8 Minimal MySQL Installation by using Docker&body=Check out this article: https://8eatles.github.io/2020/03/03/CentOS8-Minimal-MySQL-Installation-by-using-Docker/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://8eatles.github.io/2020/03/03/CentOS8-Minimal-MySQL-Installation-by-using-Docker/&title=CentOS8 Minimal MySQL Installation by using Docker" target="_blank" rel="noopener"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://8eatles.github.io/2020/03/03/CentOS8-Minimal-MySQL-Installation-by-using-Docker/&title=CentOS8 Minimal MySQL Installation by using Docker" target="_blank" rel="noopener"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://8eatles.github.io/2020/03/03/CentOS8-Minimal-MySQL-Installation-by-using-Docker/&title=CentOS8 Minimal MySQL Installation by using Docker" target="_blank" rel="noopener"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://8eatles.github.io/2020/03/03/CentOS8-Minimal-MySQL-Installation-by-using-Docker/&title=CentOS8 Minimal MySQL Installation by using Docker" target="_blank" rel="noopener"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://8eatles.github.io/2020/03/03/CentOS8-Minimal-MySQL-Installation-by-using-Docker/&name=CentOS8 Minimal MySQL Installation by using Docker&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://8eatles.github.io/2020/03/03/CentOS8-Minimal-MySQL-Installation-by-using-Docker/&t=CentOS8 Minimal MySQL Installation by using Docker" target="_blank" rel="noopener"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#null"><span class="toc-number">1.</span> <span class="toc-text">0. Table of Contents#</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#null"><span class="toc-number">2.</span> <span class="toc-text">1. Install Database (MySQL)#</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#null"><span class="toc-number">2.1.</span> <span class="toc-text">1-1. Pull and Run MySQL Container#</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#null"><span class="toc-number">2.2.</span> <span class="toc-text">1-2. Install MySQL Client#</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#null"><span class="toc-number">3.</span> <span class="toc-text">2. Create MySQL Login PATH#</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#null"><span class="toc-number">3.1.</span> <span class="toc-text">2-1. Create a Login PATH#</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#null"><span class="toc-number">3.2.</span> <span class="toc-text">2-2. Use Login PATH#</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#null"><span class="toc-number">3.3.</span> <span class="toc-text">2-3. Other Commands#</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#null"><span class="toc-number">4.</span> <span class="toc-text">3. Create Database#</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#null"><span class="toc-number">4.1.</span> <span class="toc-text">3-1. Create a Database#</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#null"><span class="toc-number">4.2.</span> <span class="toc-text">3-2. Create a User and Get Privileges#</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        CentOS8 Minimal MySQL Installation by using Docker
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">8eatles</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2020-03-03T14:05:38.000Z" itemprop="datePublished">2020-03-03</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2><span id="0-table-of-contents">0. Table of Contents</span><a href="#0-table-of-contents" class="header-anchor">#</a></h2><div class="toc">
+
+<!-- toc -->
+
+<ul>
+<li><a href="#1-install-database-mysql">1. Install Database (MySQL)</a><ul>
+<li><a href="#1-1-pull-and-run-mysql-container">1-1. Pull and Run MySQL Container</a></li>
+<li><a href="#1-2-install-mysql-client">1-2. Install MySQL Client</a></li>
+</ul>
+</li>
+<li><a href="#2-create-mysql-login-path">2. Create MySQL Login PATH</a><ul>
+<li><a href="#2-1-create-a-login-path">2-1. Create a Login PATH</a></li>
+<li><a href="#2-2-use-login-path">2-2. Use Login PATH</a></li>
+<li><a href="#2-3-other-commands">2-3. Other Commands</a></li>
+</ul>
+</li>
+<li><a href="#3-create-database">3. Create Database</a><ul>
+<li><a href="#3-1-create-a-database">3-1. Create a Database</a></li>
+<li><a href="#3-2-create-a-user-and-get-privileges">3-2. Create a User and Get Privileges</a></li>
+</ul>
+</li>
+</ul>
+<!-- tocstop -->
+
+</div>
+
+<h2><span id="1-install-database-mysql">1. Install Database (MySQL)</span><a href="#1-install-database-mysql" class="header-anchor">#</a></h2><h3><span id="1-1-pull-and-run-mysql-container">1-1. Pull and Run MySQL Container</span><a href="#1-1-pull-and-run-mysql-container" class="header-anchor">#</a></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ROOT_PWD=<span class="string">"p@ssw0rd"</span></span><br><span class="line">PORT=<span class="string">"3306"</span></span><br><span class="line">docker pull mysql:8</span><br><span class="line">docker run -d -e MYSQL_ROOT_PASSWORD=<span class="string">"<span class="variable">$ROOT_PWD</span>"</span> \</span><br><span class="line">--name=mysql -p <span class="variable">$&#123;PORT&#125;</span>:3306 mysql:8</span><br></pre></td></tr></table></figure>
+
+<h3><span id="1-2-install-mysql-client">1-2. Install MySQL Client</span><a href="#1-2-install-mysql-client" class="header-anchor">#</a></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo dnf install -y mysql</span><br></pre></td></tr></table></figure>
+
+<h2><span id="2-create-mysql-login-path">2. Create MySQL Login PATH</span><a href="#2-create-mysql-login-path" class="header-anchor">#</a></h2><p>Mysql Client로 SQL을 실행할 때 Command Line에 Password를 노출시키면 아래와 같은 경고가 뜸</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql -uroot -pPASSWORD -h10.0.10.1 -P3306 -e <span class="string">"SHOW DATABASES;"</span></span><br><span class="line"><span class="comment"># mysql: [Warning] Using a password on the command line ~~~ insecure.</span></span><br></pre></td></tr></table></figure>
+
+<h3><span id="2-1-create-a-login-path">2-1. Create a Login PATH</span><a href="#2-1-create-a-login-path" class="header-anchor">#</a></h3><p>Script를 통한 자동화 Password 노출 없이 사용하기 위해 MySQL Login PATH 기능 사용<br>Login PATH는 mysql_config_editor를 이용하여 생성할 수 있음</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#   -G, --login-path=name Login Path 이름</span></span><br><span class="line"><span class="comment">#   -S, --socket=name     Mysql 서버와 연결된 소켓 주소</span></span><br><span class="line"><span class="comment">#   -h, --host=name       Mysql 서버 호스트 주소</span></span><br><span class="line"><span class="comment">#   -P, --port=name       Mysql 서버 포트 번호</span></span><br><span class="line"><span class="comment">#   -u, --user=name       접속할 사용자 이름</span></span><br><span class="line"><span class="comment">#   -p, --password        Login Path에 비밀번호 저장할 것인지 여부</span></span><br><span class="line">mysql_config_editor <span class="built_in">set</span> -Gself -h10.0.10.1 -P3306 -uroot -p</span><br></pre></td></tr></table></figure>
+
+<h3><span id="2-2-use-login-path">2-2. Use Login PATH</span><a href="#2-2-use-login-path" class="header-anchor">#</a></h3><p>생성한 Login PATH는 아래 옵션을 통해 사용할 수 있음</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#   --login-path=name     생성한 Login Path 이름</span></span><br><span class="line">mysql --login-path=self -e <span class="string">"SHOW DATABASES;"</span></span><br></pre></td></tr></table></figure>
+
+<h3><span id="2-3-other-commands">2-3. Other Commands</span><a href="#2-3-other-commands" class="header-anchor">#</a></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Show all Login PATH</span></span><br><span class="line">mysql_config_editor <span class="built_in">print</span> --all</span><br><span class="line"></span><br><span class="line"><span class="comment"># Delete a Login PATH</span></span><br><span class="line">mysql_config_editor remove --login-path=<span class="variable">$&#123;PATH_NAME&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Delete all Login PATH</span></span><br><span class="line">mysql_config_editor remove</span><br></pre></td></tr></table></figure>
+
+<h2><span id="3-create-database">3. Create Database</span><a href="#3-create-database" class="header-anchor">#</a></h2><h3><span id="3-1-create-a-database">3-1. Create a Database</span><a href="#3-1-create-a-database" class="header-anchor">#</a></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">DATABASE=<span class="string">"mydb"</span></span><br><span class="line"></span><br><span class="line">mysql --login-path=self -e <span class="string">"\</span></span><br><span class="line"><span class="string">CREATE DATABASE <span class="variable">$&#123;DATABASE&#125;</span> CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;\</span></span><br><span class="line"><span class="string">"</span></span><br></pre></td></tr></table></figure>
+
+<h3><span id="3-2-create-a-user-and-get-privileges">3-2. Create a User and Get Privileges</span><a href="#3-2-create-a-user-and-get-privileges" class="header-anchor">#</a></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">DATABASE=<span class="string">"mydb"</span></span><br><span class="line">USERNAME=<span class="string">"dbuser"</span></span><br><span class="line">PASSWORD=<span class="string">"dbpass"</span></span><br><span class="line"></span><br><span class="line">mysql --login-path=self -e <span class="string">"\</span></span><br><span class="line"><span class="string">CREATE USER '<span class="variable">$&#123;USERNAME&#125;</span>'@'%' identified by '<span class="variable">$&#123;PASSWORD&#125;</span>';\</span></span><br><span class="line"><span class="string">GRANT ALL PRIVILEGES ON <span class="variable">$&#123;DATABASE&#125;</span>.* TO '<span class="variable">$&#123;USERNAME&#125;</span>'@'%' WITH GRANT OPTION;\</span></span><br><span class="line"><span class="string">FLUSH PRIVILEGES;\</span></span><br><span class="line"><span class="string">"</span></span><br></pre></td></tr></table></figure>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#null"><span class="toc-number">1.</span> <span class="toc-text">0. Table of Contents#</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#null"><span class="toc-number">2.</span> <span class="toc-text">1. Install Database (MySQL)#</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#null"><span class="toc-number">2.1.</span> <span class="toc-text">1-1. Pull and Run MySQL Container#</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#null"><span class="toc-number">2.2.</span> <span class="toc-text">1-2. Install MySQL Client#</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#null"><span class="toc-number">3.</span> <span class="toc-text">2. Create MySQL Login PATH#</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#null"><span class="toc-number">3.1.</span> <span class="toc-text">2-1. Create a Login PATH#</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#null"><span class="toc-number">3.2.</span> <span class="toc-text">2-2. Use Login PATH#</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#null"><span class="toc-number">3.3.</span> <span class="toc-text">2-3. Other Commands#</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#null"><span class="toc-number">4.</span> <span class="toc-text">3. Create Database#</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#null"><span class="toc-number">4.1.</span> <span class="toc-text">3-1. Create a Database#</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#null"><span class="toc-number">4.2.</span> <span class="toc-text">3-2. Create a User and Get Privileges#</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://8eatles.github.io/2020/03/03/CentOS8-Minimal-MySQL-Installation-by-using-Docker/" target="_blank" rel="noopener"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://8eatles.github.io/2020/03/03/CentOS8-Minimal-MySQL-Installation-by-using-Docker/&text=CentOS8 Minimal MySQL Installation by using Docker" target="_blank" rel="noopener"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://8eatles.github.io/2020/03/03/CentOS8-Minimal-MySQL-Installation-by-using-Docker/&title=CentOS8 Minimal MySQL Installation by using Docker" target="_blank" rel="noopener"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://8eatles.github.io/2020/03/03/CentOS8-Minimal-MySQL-Installation-by-using-Docker/&is_video=false&description=CentOS8 Minimal MySQL Installation by using Docker" target="_blank" rel="noopener"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=CentOS8 Minimal MySQL Installation by using Docker&body=Check out this article: https://8eatles.github.io/2020/03/03/CentOS8-Minimal-MySQL-Installation-by-using-Docker/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://8eatles.github.io/2020/03/03/CentOS8-Minimal-MySQL-Installation-by-using-Docker/&title=CentOS8 Minimal MySQL Installation by using Docker" target="_blank" rel="noopener"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://8eatles.github.io/2020/03/03/CentOS8-Minimal-MySQL-Installation-by-using-Docker/&title=CentOS8 Minimal MySQL Installation by using Docker" target="_blank" rel="noopener"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://8eatles.github.io/2020/03/03/CentOS8-Minimal-MySQL-Installation-by-using-Docker/&title=CentOS8 Minimal MySQL Installation by using Docker" target="_blank" rel="noopener"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://8eatles.github.io/2020/03/03/CentOS8-Minimal-MySQL-Installation-by-using-Docker/&title=CentOS8 Minimal MySQL Installation by using Docker" target="_blank" rel="noopener"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://8eatles.github.io/2020/03/03/CentOS8-Minimal-MySQL-Installation-by-using-Docker/&name=CentOS8 Minimal MySQL Installation by using Docker&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://8eatles.github.io/2020/03/03/CentOS8-Minimal-MySQL-Installation-by-using-Docker/&t=CentOS8 Minimal MySQL Installation by using Docker" target="_blank" rel="noopener"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2020 8eatles
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>
